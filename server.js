@@ -116,20 +116,11 @@ app.get('/',async(req,res,next)=>{
 
 app.post('/file', upload.single('image'), async(req,res,next)=>{
   try {
-    if(req.file){
-      const file = req.file;
-      const result = await predict(file.path);
-      fs2.unlinkSync(file.path);
-      res.status(200).json({
-        status: "Success",
-        result
-      })
-    }else{
-      const error = new Error;
-      error.message = "No files included";
-      error.status = 400;
-      throw error;
-    }
+    const result = await predict('files/test-image.jpg');
+    res.status(200).json({
+      status: "Success",
+      result
+    })
   } catch (error) {
     console.log(error.message);
     res.status(error.status || 500).json({
